@@ -18,7 +18,7 @@ class TodoAdapter(private val list: MutableList<Todo>): RecyclerView.Adapter<Tod
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         holder.binding.apply {
             val todo = list[position]
-            //deadlineTextView.text = todo.deadline
+            todoEditText.setText(todo.title)
         }
     }
 

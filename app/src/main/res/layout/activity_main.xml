@@ -39,7 +39,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/allTodoTextView"
         app:layout_constraintTop_toTopOf="@id/allTodoTextView"
-        app:layout_constraintBottom_toBottomOf="@id/allTodoTextView"/>
+        app:layout_constraintBottom_toBottomOf="@id/allTodoTextView"
+        android:layout_marginStart="10dp"
+        android:button="@android:color/transparent"
+        android:background="@drawable/circle_checkbox"/>
 
 
     <View
@@ -67,7 +70,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/addFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"

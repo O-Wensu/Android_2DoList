@@ -13,19 +13,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+/*
         val dummyList = mutableListOf(
             Todo("밥 먹기", "오늘"),
-            Todo("밥 먹기", "오늘"),
-            Todo("밥 먹기", "오늘")
-        )
+            Todo("집 가기", "오늘"),
+            Todo("잠자기", "오늘")
+        )*/
 
-        todoAdapter = TodoAdapter(dummyList)
+        val defaultTodo = Todo("", "오늘")
+        val todoLists = mutableListOf<Todo>()
+
+        //todoAdapter = TodoAdapter(dummyList)
+
+        binding.addFloatingActionButton.setOnClickListener {
+            todoLists.add(defaultTodo)
+            todoAdapter = TodoAdapter(todoLists)
+            updateTodo(todoAdapter)
+        }
+    }
+
+    fun updateTodo(todoAdapter: TodoAdapter) {
         binding.todoRecyclerView.apply {
             adapter = todoAdapter
             layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-/*            val dividerItemDecoration = DividerItemDecoration(applicationContext,LinearLayoutManager.VERTICAL)
-            addItemDecoration(dividerItemDecoration)*/
         }
     }
 }
