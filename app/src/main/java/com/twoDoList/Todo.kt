@@ -1,6 +1,11 @@
 package com.twoDoList
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "todo")
 data class Todo(
-    val title: String,
-    val deadline: String
+    var title: String,
+    var deadline: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
 )

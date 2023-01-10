@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="3dp"
         android:button="@android:color/transparent"
         android:background="@drawable/circle_checkbox"/>
 
@@ -27,12 +28,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="할 일"
+        android:hint="할 일"
+        android:singleLine="true"
+        android:textColorHint="@color/blue"
         app:layout_constraintBaseline_toBaselineOf="@id/completeCheckBox"
         app:layout_constraintStart_toEndOf="@id/completeCheckBox"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="30dp"/>
+        android:layout_marginEnd="25dp"/>
 
     <TextView
         android:id="@+id/deadLineTextView"
@@ -47,11 +50,12 @@
         android:layout_marginStart="4dp"/>
 
     <ImageButton
-        android:id="@+id/moreButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/moreImageButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/shape_circle"
         app:layout_constraintStart_toEndOf="@+id/todoEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/deadLineTextView"
         app:layout_constraintBottom_toBottomOf="@id/deadLineTextView"
         android:src="@drawable/ic_baseline_more_horiz_24"/>
