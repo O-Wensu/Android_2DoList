@@ -2,24 +2,26 @@ package com.twoDoList
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.twoDoList.databinding.ActivityMainBinding
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var todoAdapter: TodoAdapter
+
     init {
         instance = this
     }
+
     companion object {
-        private var instance:MainActivity?=null
+        private var instance: MainActivity? = null
         fun getInstance(): MainActivity? {
             return instance
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -42,22 +44,16 @@ class MainActivity : AppCompatActivity() {
 
         binding.todoRecyclerView.apply {
             adapter = todoAdapter
-            layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         }
         Thread {
             val list = AppDatabase.getInstance(this)?.todoDao()?.getAll() ?: emptyList()
+            //val list = AppDatabase.getInstance(this)?.todoDao()?.getNotFinished() ?: emptyList()
             todoAdapter.list.addAll(list)
             runOnUiThread { todoAdapter.notifyDataSetChanged() }
         }.start()
     }
-/*
-    private fun addUpdateTodo() {
-        Thread {
-            val todo = Todo("공부하기", "오늘")
-            todoAdapter.list.add(0, todo)
-            runOnUiThread { todoAdapter.notifyDataSetChanged() }
-        }.start()
-    }*/
 
     private fun add() {
         val text = ""
@@ -66,10 +62,23 @@ class MainActivity : AppCompatActivity() {
 
         Thread {
             AppDatabase.getInstance(this)?.todoDao()?.insert(todo)
-            runOnUiThread{
-                todoAdapter.list.add(0,todo)
+            runOnUiThread {
+                todoAdapter.list.add(0, todo)
                 todoAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "데이터를 추가했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
+    }
+
+    fun edit(todo: Todo, text: String) {
+        val index = todoAdapter.list.indexOfFirst { it.id == todo.id }
+        val editTodo = todoAdapter.list[index].copy(title = text)
+        todoAdapter.list[index] = editTodo
+        Thread{
+            AppDatabase.getInstance(this)?.todoDao()?.update(editTodo)
+            runOnUiThread {
+                Toast.makeText(this, "수정을 완료했습니다.", Toast.LENGTH_SHORT).show()
+                todoAdapter.notifyItemChanged(index)
             }
         }.start()
     }
