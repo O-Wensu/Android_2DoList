@@ -13,40 +13,19 @@ import com.twoDoList.databinding.ItemTodoBinding
 import java.util.*
 
 
-class TodoAdapter(var list: MutableList<Todo>): RecyclerView.Adapter<TodoViewHolder>() {
-
-/*    inner class TodoTextWatcher(var position: Int) : TextWatcher {
-
-        override fun afterTextChanged(p0: Editable?) {
-            //list.set(position, )
-            println("p0: $p0 | position: $position | title: ${list[position].title}")
-            //notifyDataSetChanged()
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-        }
-    }*/
-
-    fun removeItem(position: Int) {
-
-    }
+class TodoAdapter(var list: MutableList<Todo>) : RecyclerView.Adapter<TodoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
-        val inflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val binding = ItemTodoBinding.inflate(inflater,parent,false)
-/*        binding.moreImageButton.setOnClickListener{
-            Toast.makeText(this, "클릭", Toast.LENGTH_SHORT).show()}*/
+        val inflater =
+            parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val binding = ItemTodoBinding.inflate(inflater, parent, false)
         return TodoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         holder.binding.apply {
             val todo = list[position]
-
+            holder.setData(todo)
 /*            todoEditText.setText(todo.title)
             //println("title: ${todo.title}, position: $position")
             todoEditText.addTextChangedListener(TodoTextWatcher(position))*/
@@ -59,17 +38,24 @@ class TodoAdapter(var list: MutableList<Todo>): RecyclerView.Adapter<TodoViewHol
 
 }
 
-class TodoViewHolder(val binding: ItemTodoBinding): RecyclerView.ViewHolder(binding.root) {
+class TodoViewHolder(val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
     private val mainActivity = MainActivity.getInstance()
+    var mTodo: Todo? = null
+
     init {
         binding.moreImageButton.setOnClickListener {
             mainActivity?.showMoreView()
         }
 
-        binding.completeCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.completeCheckBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                mainActivity?.delete()
+                binding.completeCheckBox.isChecked = false
+                mainActivity?.delete(mTodo!!)
             }
         }
+    }
+
+    fun setData(todo: Todo) {
+        this.mTodo = todo
     }
 }

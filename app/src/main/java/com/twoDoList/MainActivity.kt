@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.allTodoCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                Toast.makeText(this, "모든 Todo 보기를 클릭했습니다.", Toast.LENGTH_SHORT).show()
+                showAll()
             }
         }
     }
@@ -62,11 +62,13 @@ class MainActivity : AppCompatActivity() {
     private fun add() {
         val text = ""
         val deadLine = "오늘"
-        val todo = Todo(text, deadLine)
+        val todo = Todo(text, deadLine, false)
 
         Thread {
             AppDatabase.getInstance(this)?.todoDao()?.insert(todo)
             runOnUiThread{
+                todoAdapter.list.add(0,todo)
+                todoAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "데이터를 추가했습니다.", Toast.LENGTH_SHORT).show()
             }
         }.start()
@@ -76,8 +78,15 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "더보기를 클릭했습니다", Toast.LENGTH_SHORT).show()
     }
 
-    fun delete() {
-        Toast.makeText(this, "todo를 완료했습니다.", Toast.LENGTH_SHORT).show()
+    fun delete(todo: Todo) {
+        Thread {
+            AppDatabase.getInstance(this)?.todoDao()?.delete(todo)
+            runOnUiThread {
+                todoAdapter.list.remove(todo)
+                todoAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "완료한 todo를 제거했습니다..", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
     }
 
     fun showAll() {
